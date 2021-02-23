@@ -57,32 +57,10 @@ typedef union
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
 #define			NVIC_BASE_ADD		(0xE000E100)
-
-#define			NVIC_ISER0			*((volatile uint32 * )(NVIC_BASE_ADD +0x000))
-#define			NVIC_ISER1			*((volatile uint32 * )(NVIC_BASE_ADD +0x004))
-
-#define			NVIC_ICER0			*((volatile uint32 * )(NVIC_BASE_ADD +0x080))
-#define			NVIC_ICER1			*((volatile uint32 * )(NVIC_BASE_ADD +0x084))
-
-#define			NVIC_ISPR0			*((volatile uint32 * )(NVIC_BASE_ADD +0x100))
-#define			NVIC_ISPR1			*((volatile uint32 * )(NVIC_BASE_ADD +0x104))
-
-#define			NVIC_ICPR0			*((volatile uint32 * )(NVIC_BASE_ADD +0x180))
-#define			NVIC_ICPR1			*((volatile uint32 * )(NVIC_BASE_ADD +0x184))
-
-#define			NVIC_IABR0			*((volatile uint32 * )(NVIC_BASE_ADD +0x200))
-#define			NVIC_IABR1			*((volatile uint32 * )(NVIC_BASE_ADD +0x204))
-
-#define			NVIC_IPR			((volatile uint8 *)(NVIC_BASE_ADD + 0x300))
 #define	    	NVIC_IPR			((volatile uint8 *)(0xE000E400))
 
-
- #define			SET_BIT(REG,BIT_NUM)		(REG |=  (1<<BIT_NUM))
-
-    #define			NVIC_4BITS_GROUP_0BITS_SUB		0x05FA0300
-	#define			NVIC_3BITS_GROUP_1BITS_SUB		0x05FA0400
-	#define			NVIC_1BITS_GROUP_3BITS_SUB		0x05FA0600
-	#define			NVIC_0BITS_GROUP_4BITS_SUB		0x05FA0700
+//      		SET_BIT(REG,BIT_NUM)	            	(REG |=  (1<<BIT_NUM))
+#define      SET_BIT(BaseAddress,RegOffset)		*((volatile uint32*)(BaseAddress+RegOffset))
 
 
 #endif  /* MCU_HW_H */

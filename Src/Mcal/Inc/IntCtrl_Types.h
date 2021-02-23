@@ -30,6 +30,7 @@
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
 
+
 typedef enum            /*Represent All Interrupt Numbers */
 {
 	NVIC_GPIO_PORT_A = 0 			,
@@ -127,7 +128,33 @@ typedef enum            /*Represent All Interrupt Numbers */
 	NVIC_16_32_TIMER_4_A     		,
 	NVIC_16_32_TIMER_4_B     		,
 	
-	/*_______72 - 79 Reserved________*/
+	/*_______72 - 91 Reserved________*/
+	
+	NVIC_16_32_TIMER_5_A = 92		,
+	NVIC_16_32_TIMER_5_B     		,
+	NVIC_32_64_TIMER_0_A     		,
+	NVIC_32_64_TIMER_0_B     		,
+	NVIC_32_64_TIMER_1_A     		,
+	NVIC_32_64_TIMER_1_B     		,
+	NVIC_32_64_TIMER_2_A     		,
+	NVIC_32_64_TIMER_2_B     		,
+	NVIC_32_64_TIMER_3_A     		,
+	NVIC_32_64_TIMER_3_B     		,
+	NVIC_32_64_TIMER_4_A     		,
+	NVIC_32_64_TIMER_4_B     		,
+	NVIC_32_64_TIMER_5_A     		,
+	NVIC_32_64_TIMER_5_B     		,
+	
+	NVIC_SYSTEM_EXCEPTION    		,
+	
+	/*_______107 - 133 Reserved________*/
+	
+	NVIC_PWM_1_GEN_0 = 134   		,
+	NVIC_PWM_1_GEN_1         		,
+	NVIC_PWM_1_GEN_2         		,
+	NVIC_PWM_1_GEN_3         		,
+	NVIC_PWM_1_FAULT
+	
 }Nvic_IntType;
 
 

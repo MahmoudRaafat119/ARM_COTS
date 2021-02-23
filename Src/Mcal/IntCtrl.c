@@ -20,10 +20,16 @@
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
 *********************************************************************************************************************/	
-#define NVIC_GROUPING_SYSTEM_XXX    0x05FA0400
-#define NVIC_GROUPING_SYSTEM_XXY    0x05FA0500
-#define NVIC_GROUPING_SYSTEM_XYY    0x05FA0600
-#define NVIC_GROUPING_SYSTEM_YYY    0x05FA0700
+#define NVIC_GROUPING_SYSTEM_XXX    4
+#define NVIC_GROUPING_SYSTEM_XXY    5
+#define NVIC_GROUPING_SYSTEM_XYY    6
+#define NVIC_GROUPING_SYSTEM_YYY    7
+
+#define APINT_VECTKEY 							0x05FA
+#define APINT_VECTKEY_FIRLED_OFFSET             16u
+#define PRIGROUP_FIELED_OFFSET		         	0x8u
+#define NVIC_REG_NUM_OF_PRI_FIELDS	            4u
+
 
 /**********************************************************************************************************************
  *  LOCAL DATA 
@@ -60,13 +66,15 @@ void IntCrtl_Init(void)
 {
 	Nvic_IntType intNum;
 	uint8  Group, SubGroup,i,GroupingField;
-	uint32 enRegOffset, enBitOffset;
-	uint32 priRegOffset, priBitOffset;
+	uint32 EnableRegOffset, EnableBitOffset;
+	uint32 PriorityRegOffset, PriorityBitOffset;
 	
 	/* configure grouping and subgrouping int APINT register in SCB */
+	APINT = (APINT_VECTKEY<<APINT_VECTKEY_FIRLED_OFFSET)
+					|(NVIC_GROUPING_SYSTEM << PRIGROUP_FIELED_OFFSET);
 	
-	#define		SCB_AIRCR		*((volatile uint32 *)(0xE000ED00+0x0C))
-	SCB_AIRCR = NVIC_GROUPING_SYSTEM;
+	//#define		SCB_AIRCR		*((volatile uint32 *)(0xE000ED00+0x0C))
+	//SCB_AIRCR = NVIC_GROUPING_SYSTEM;
 	
 	for(i=0; i< NVIC_ACTIVATED_INT_SIZE ;i++)
 	{
@@ -75,19 +83,11 @@ void IntCrtl_Init(void)
 		SubGroup        = NVIC_Cfg[i].SubGroup_Priority;
 		
 		/* enable\disable based on user configuration */
-		if(intNum < 32)
-		{
-			NVIC_ISER0 = (1<<intNum);
-		}
-		else if(intNum < 60)
-		{
-			intNum -=32;
-			NVIC_ISER1 = (1<<intNum);
-		}
-		else 
-		{
-			/*	return Error	 */
-		}
+		EnableRegOffset = (intNum/WORD_LENGTH_BITS)*WORD_LENGTH_BYTES;
+		EnableBitOffset = intNum%WORD_LENGTH_BITS;
+			
+		SET_BIT(NVIC_BASE_ADD,EnableRegOffset) |= (1 << EnableBitOffset);
+
 
 			#if NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_XXX
 						GroupingField = Group;
@@ -104,6 +104,12 @@ void IntCrtl_Init(void)
 				#error INVALID GROUPING SELECTION			
 			#endif
 			
+						/* asign group\subgroup priority */
+		
+			PriorityRegOffset = (intNum/NVIC_REG_NUM_OF_PRI_FIELDS)*WORD_LENGTH_BYTES;
+			PriorityBitOffset = 5 + (8 * (intNum%NVIC_REG_NUM_OF_PRI_FIELDS));
+			SET_BIT(NVIC_IPR,PriorityRegOffset) |= (GroupingField << PriorityBitOffset);
+
 			/* asign group\subgroup priority */
 			if(intNum < 60)
 			{

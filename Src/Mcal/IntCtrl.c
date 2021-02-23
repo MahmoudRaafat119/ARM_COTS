@@ -110,15 +110,6 @@ void IntCrtl_Init(void)
 			PriorityBitOffset = 5 + (8 * (intNum%NVIC_REG_NUM_OF_PRI_FIELDS));
 			SET_BIT(NVIC_IPR,PriorityRegOffset) |= (GroupingField << PriorityBitOffset);
 
-			/* asign group\subgroup priority */
-			if(intNum < 60)
-			{
-				NVIC_IPR[intNum] =  GroupingField;
-			}
-			else
-			{
-				/*	Return ERROR				*/
-			}		
 	}	
 }
 

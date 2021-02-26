@@ -52,12 +52,12 @@ typedef union
 #define CORTEXM4_PERI_BASE_ADDRESS             0xE000E000
 #define APINT                                  *((volatile uint32*)(CORTEXM4_PERI_BASE_ADDRESS+0xD0C))
 #define INTCTRL                                *((volatile INTCTRL_Tag*)(CORTEXM4_PERI_BASE_ADDRESS+0xD04))
-
+#define			NVIC_BASE_ADD		(0xE000E100)
+#define	    	NVIC_IPR			((volatile uint8 *)(0xE000E400))
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
-#define			NVIC_BASE_ADD		(0xE000E100)
-#define	    	NVIC_IPR			((volatile uint8 *)(0xE000E400))
+
 
 //      		SET_BIT(REG,BIT_NUM)	            	(REG |=  (1<<BIT_NUM))
 #define      SET_BIT(BaseAddress,RegOffset)		*((volatile uint32*)(BaseAddress+RegOffset))

@@ -14,7 +14,6 @@
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "IntCtrl.h"
-#include "IntCtrl_Lcfg.c"
 #include "Mcu_Hw.h"
 
 /**********************************************************************************************************************
@@ -83,7 +82,7 @@ void IntCrtl_Init(void)
 		SubGroup        = NVIC_Cfg[i].SubGroup_Priority;
 		
 		/* enable\disable based on user configuration */
-		EnableRegOffset = (intNum/WORD_LENGTH_BITS)*WORD_LENGTH_BYTES;
+		EnableRegOffset = (intNum/WORD_LENGTH_BITS)*WORD_LENGTH_BYTES; 
 		EnableBitOffset = intNum%WORD_LENGTH_BITS;
 			
 		SET_BIT(NVIC_BASE_ADD,EnableRegOffset) |= (1 << EnableBitOffset);

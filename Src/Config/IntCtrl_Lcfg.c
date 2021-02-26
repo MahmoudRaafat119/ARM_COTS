@@ -12,10 +12,7 @@
 /**********************************************************************************************************************
  *  INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
-
-#include "IntCtrl_Cfg.h"
-#include "IntCtrl_Types.h"
+#include "IntCtrl.h"
 
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
@@ -28,17 +25,15 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA
  *********************************************************************************************************************/
-typedef struct
-{
-	Nvic_IntType Interupt_Number;
-	uint8        Group_Priority;
-	uint8        SubGroup_Priority;
-	
-}Nvic_CfgType;
+
 
 const Nvic_CfgType NVIC_Cfg[NVIC_ACTIVATED_INT_SIZE] ={
 	/* Interupt_Number    Group_Priority     SubGroup_Priority */
- { NVIC_GPIO_PORT_B,    2,                       1                  },
+  { NVIC_GPIO_PORT_B,    2,                       1                  },
+  { NVIC_UART_2,         1,                       0                  },
+  { NVIC_UART_3,         2,                       0                  },
+  { NVIC_16_32_TIMER_5_B,3,                       1                  },
+  { NVIC_PWM_1_GEN_0,    0,                       0                  },
  
 };
 

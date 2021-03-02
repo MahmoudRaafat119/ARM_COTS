@@ -1,8 +1,14 @@
 #include "IntCtrl.h"
 
 
-void main(void)
+int main(void)
 {
 	IntCrtl_Init();
 	
+	while(1)
+	{
+	
+	
+	}
+	return 0;
 }

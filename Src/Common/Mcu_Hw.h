@@ -15,10 +15,12 @@
  * INCLUDES
  *********************************************************************************************************************/
 #include "Std_Types.h"
-
 /**********************************************************************************************************************
- *  GLOBAL DATA TYPES AND STRUCTURES
+ *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
+/***************************************************
+ *  GLOBAL DATA TYPES AND STRUCTURES FOR INTCTRL 
+ ***************************************************/
 typedef struct 
 {
     uint32 VECACT   :8;
@@ -39,30 +41,104 @@ typedef struct
 }INTCTRL_BF;
 typedef union 
 {
-    uint32 R;
-    INTCTRL_BF B;
+    uint32       R;
+    INTCTRL_BF   B;
+	
 }INTCTRL_Tag;
 
+/**************************************
+*   NVIC REGISTRE
+***************************************/
+#define NVIC_ENABLE_BASE_ADDRESS         0xE000E100
+#define NVIC_PRI_BASE_ADDRESS            0xE000E400
+/**************************************
+*   SYSTEM CONTROL REGISTRES
+***************************************/
+#define SYSCONTROL_BASE_ADDRESS           0x400FE000
+#define RESC                            (*((volatile uint32*)0x400FE05C))
+#define RCC                             (*((volatile RCC_TAG*)0x400FE060))
+#define RCC2                            (*((volatile RCC2_TAG*)0x400FE070))
+#define PLLSTAT                         (*((volatile uint32*)0x400FE168))
+
+typedef struct
+{
+	uint32 MOSCDIS  :1;
+	uint32          :3;
+	uint32 OSCSRC   :2;
+	uint32 XTAL     :5;
+	uint32 BYPASS   :1;
+	uint32          :1;
+	uint32 PWRDN    :1;
+	uint32          :3;
+	uint32 PWMDIV   :3;
+	uint32 USEPWMDIV:1;
+	uint32          :1;
+	uint32 USESYSDIV:1;
+	uint32 SYSDIV   :4;
+	uint32 ACG      :1;
+	uint32          :4;	
+}Mcu_StrBF;	
+	
+typedef union
+{
+	uint32 R;
+	Mcu_StrBF B;
+
+}RCC_TAG;
+
+typedef struct
+{
+	uint32              :4;
+	uint32  OSCSRC2     :3;
+	uint32              :4;
+	uint32  BYPASS      :1;
+	uint32              :1;
+	uint32  PWRDN2      :1;
+	uint32  USBPWRDN    :1;
+	uint32              :1;
+	uint32              :6;
+	uint32  SYSDIV2LSB  :1;
+	uint32  SYSDIV2     :6;
+	uint32              :1;
+	uint32  DIV400      :1;
+	uint32  USERCC2     :1;
+}Mcu_StrBF2;	
+	
+typedef union
+{
+	uint32 R;
+	Mcu_StrBF2 B;
+
+}RCC2_TAG;
+#define SYSCONTROL_RCG_BASE_ADDR    0x400FE600
+
+#define RCGCGPIO_OFFSET                  0x608
+#define RCGCGPIO                        (*((volatile uint32*)(SYSCONTROL_RCG_BASE_ADDR+RCGCGPIO_OFFSET))
+
+
+#define SYSCTR_RCG_BASE_ADDR    0x400FE600
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-/*************************************** 
- *   NVIC REGISTRE
-***************************************/
 #define CORTEXM4_PERI_BASE_ADDRESS             0xE000E000
 #define APINT                                  *((volatile uint32*)(CORTEXM4_PERI_BASE_ADDRESS+0xD0C))
 #define INTCTRL                                *((volatile INTCTRL_Tag*)(CORTEXM4_PERI_BASE_ADDRESS+0xD04))
-#define			NVIC_BASE_ADD		(0xE000E100)
-#define	    	NVIC_IPR			((volatile uint8 *)(0xE000E400))
+
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
+#define GET_HWREG(BaseAddr,RegOffset)      *((volatile uint32*)(BaseAddr+RegOffset))
+#define GPIODIR(BaseAddr)                  *((volatile uint32*)BaseAddr+GPIODIR_OFFSET) 
 
+#define BASE_ADDRESS_PRE                              0x40000000
+#define BASE_ADDRESS_PRE_ALIAS                        0x42000000
 
-//      		SET_BIT(REG,BIT_NUM)	            	(REG |=  (1<<BIT_NUM))
-#define      SET_BIT(BaseAddress,RegOffset)		*((volatile uint32*)(BaseAddress+RegOffset))
+#define GET_RegisterOffset(RegisterAddr)              ((RegisterAddr - BASE_ADDRESS_PRE)/4)
+#define GET_BitOffset(RegisterAddr,BitPos)            ((GET_RegisterOffset(RegisterAddr)*32) + BitPos)
+#define GET_BBAlIAS_PRE_REG(RegisterAddr, BitPos)     (*(volatile uint32*)((GET_BitOffset(RegisterAddr,BitPos)*4) + BASE_ADDRESS_PRE_ALIAS))
+ 
 
-
+ 
 #endif  /* MCU_HW_H */
 
 /**********************************************************************************************************************

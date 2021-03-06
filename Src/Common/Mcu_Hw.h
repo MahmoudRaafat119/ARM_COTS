@@ -26,8 +26,8 @@ typedef struct
     uint32 VECACT   :8;
     uint32          :3;
     uint32 RETBASE  :1;
-    uint32 VECPEND  :3;
-    uint32 VECPEND  :4;
+    uint32 VECPEND1  :3;
+    uint32 VECPEND2  :4;
     uint32          :2;
     uint32 ISRPEND  :1;
     uint32 ISRPRE   :1;

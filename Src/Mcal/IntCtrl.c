@@ -85,7 +85,7 @@ void IntCrtl_Init(void)
 		EnableRegOffset = (intNum/WORD_LENGTH_BITS)*WORD_LENGTH_BYTES; 
 		EnableBitOffset = intNum%WORD_LENGTH_BITS;
 			
-		SET_BIT(NVIC_BASE_ADD,EnableRegOffset) |= (1 << EnableBitOffset);
+		GET_HWREG(NVIC_ENABLE_BASE_ADDRESS,EnableRegOffset) |= (1 << EnableBitOffset);
 
 
 			#if NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_XXX
@@ -107,7 +107,7 @@ void IntCrtl_Init(void)
 		
 			PriorityRegOffset = (intNum/NVIC_REG_NUM_OF_PRI_FIELDS)*WORD_LENGTH_BYTES;
 			PriorityBitOffset = 5 + (8 * (intNum%NVIC_REG_NUM_OF_PRI_FIELDS));
-			SET_BIT(NVIC_IPR,PriorityRegOffset) |= (GroupingField << PriorityBitOffset);
+			GET_HWREG(NVIC_PRI_BASE_ADDRESS,PriorityRegOffset) |= (GroupingField << PriorityBitOffset);
 
 	}	
 }

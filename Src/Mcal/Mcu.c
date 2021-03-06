@@ -157,7 +157,7 @@ static Mcu_StatusType Mcu_Status = MCU_NOT_INITIALIZED;
     }
 	return ret;
 }
-}
+
 
   /******************************************************************************
 * \Syntax          : Std_ReturnType Mcu_DistributePllClock( void);                                  

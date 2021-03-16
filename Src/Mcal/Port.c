@@ -1,7 +1,7 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -----------------------------------------------------------------------------------------------------------------*/
-/**        \file  Cpu.c
+/**        \file  Port.c
  *        \brief  
  *
  *      \details  
@@ -13,20 +13,24 @@
  *  INCLUDES
  *********************************************************************************************************************/
 #include "Std_Types.h"
-#include "Cpu.h"
-
+#include "Prot.h"
+#include "mcu_hw.h"
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
 *********************************************************************************************************************/
-#define CPU_SWITCH_TO_PRIVMODE_LOCAL()  __asm("MOV R0, 0x0\n");\
-                                        __asm("MSR CONTROL, R0\n")
-																				
-#define CPU_SWITCH_TO_USERMODE_LOCAL()  __asm("MOV R0, 0x1\n");\
-                                        __asm("MSR CONTROL, R0\n")																		
+
+
+#define CHANNEL_SIZE_IN_PORT               8u
+#define MAX_NUMBER_OF_GPIO_PORTS           6u
 /**********************************************************************************************************************
  *  LOCAL DATA 
  *********************************************************************************************************************/
-static uint8 Counter = 0;
+static const uint32 Port_BaseAddr[MAX_NUMBER_OF_GPIO_PORTS] = {GPIO_APB_BASE_ADDRESS_A,
+	                                                      GPIO_APB_BASE_ADDRESS_B,
+	                                                      GPIO_APB_BASE_ADDRESS_C,
+	                                                      GPIO_APB_BASE_ADDRESS_D,
+	                                                      GPIO_APB_BASE_ADDRESS_E,
+	                                                      GPIO_APB_BASE_ADDRESS_F};
 /**********************************************************************************************************************
  *  GLOBAL DATA
  *********************************************************************************************************************/
@@ -43,42 +47,44 @@ static uint8 Counter = 0;
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
 
-void Cpu_StartCriticalSection(void)
-{
-	Counter++;
-	if(Counter <= 1)
-    {
-		   CPU_DISABLE_ALL_INTERRUPTS();
-	  }
-}
-
-void Cpu_StopCriticalSection(void)
-{
-	Counter--;
-	if(Counter == 0)
-    {
-		  CPU_ENABLE_ALL_INTERRUPTS();
-	  }
-}
 
 /******************************************************************************
-* \Syntax          : void Isr_SvcHandler(void)        
-* \Description     :                                    
+* \Syntax          : void Port_Init ( const Port_ConfigType* ConfigPtr )        
+* \Description     : Initializes the Port Driver module.                                   
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : None                     
+* \Parameters (in) : ConfigPtr       Pointer to configuration set.                     
 * \Parameters (out): None                                                      
-* \Return value:   : None
+* \Return value:   : None  
+*                                                                      
 *******************************************************************************/
-void Isr_SvcHandler(void)
+void Port_Init ( const Port_ConfigType* ConfigPtr )
 {
-	/*Switch to privledge Mode by writing to CONTROL Register */
-	CPU_SWITCH_TO_PRIVMODE_LOCAL();
-//	CPU_SWITCH_TO_USERMODE_LOCAL();
+	Port_PinType                locPinId;
+	Port_PinDirectionType       locPinDir;
+	Port_PinModeType            locPinMode;
+	Port_PinOutputCurrentType   locCurrentStrength;
+	Port_PinInternalAttachType  locInternalAttach;
+	Port_PinExternalIntType     locExternalInt;
+	uint8 PortIndex,PinIndex,i;
+	uint32 PortBaseAddr;
+	
+	for(i=0;i<PORT_ACTIVATED_CHANNELS_SIZE;i++)
+	{
+		locPinId             = ConfigPtr[i].PinID;
+		locPinDir            = ConfigPtr[i].PinDIR;
+		locPinMode           = ConfigPtr[i].PinMode;
+		locCurrentStrength   = ConfigPtr[i].currentStrength;
+		locInternalAttach    = ConfigPtr[i].internalAttach;
+		locExternalInt       = ConfigPtr[i].externalInt;
 		
+		PortIndex    = locPinId / CHANNEL_SIZE_IN_PORT ;
+		PinIndex     = locPinId % CHANNEL_SIZE_IN_PORT ;
+        PortBaseAddr = Port_BaseAddr[PortIndex] ;
+		
+		GPIODIR(PortBaseAddr) |= (locPinDir<< PinIndex) ; 
+				
+	}
+	
 }
-
-/**********************************************************************************************************************
- *  END OF FILE: Cpu.c
- *********************************************************************************************************************/

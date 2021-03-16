@@ -2,40 +2,83 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  Cpu.h
- *       Module:  Cpu
+ *         File:  Port.h
+ *       Module:  -
  *
- *  Description:  header file for Cpu Module     
+ *  Description:  <Write File DESCRIPTION here>     
  *  
  *********************************************************************************************************************/
-#ifndef CPU_H
-#define CPU_H
+#ifndef PORT_H
+#define PORT_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
 #include "Std_Types.h"
+#include "Port_Cfg.h"
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
 
 
-
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
  *********************************************************************************************************************/
-#define CPU_SWITCH_TO_PRIVMODE()        __asm("SVC #1")
-															
-#define CPU_SWITCH_TO_USERMODE()        do{__asm("MOV R0, 0x1\n");\
-                                           __asm("MSR CONTROL, R0\n")}while(0);
-													
-#define CPU_DISABLE_ALL_INTERRUPTS()    __asm("CPSID i")																				
-#define CPU_ENABLE_ALL_INTERRUPTS()     __asm("CPSIE i")					
-														 
+
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
+typedef uint8 Port_PinType;
+
+typedef enum
+{
+	PORT_PIN_IN,
+	PORT_PIN_OUT
+}Port_PinDirectionType;
+
+typedef uint8 Port_PinModeType;
+#define Port_PinMode_X_DIO           0
+#define Port_PinMode_PA0_U0RX        1
+#define Port_PinMode_PA1_U0TX        1
+#define Port_PinMode_PA2_SSI0Clk     2
+
+typedef enum
+{
+	PORT_ATTACH_DEFAULT,
+	PORT_ATTACH_PULLUP,
+	PORT_ATTACH_PULLDOWN,
+	PORT_ATTACH_OPENDRAIN	
+}Port_PinInternalAttachType;
+
+typedef enum 
+{
+	PORT_PIN_CURRENT_NA,
+	PORT_PIN_CURRENT_2m,
+	PORT_PIN_CURRENT_4m,
+	PORT_PIN_CURRENT_8m
+}Port_PinOutputCurrentType;
+
+typedef enum
+{
+	PORT_EXT_INT_DISABLE,
+	PORT_EXT_INT_RISING,
+	PORT_EXT_INT_FALLING,
+	PORT_EXT_INT_BOTH
+}Port_PinExternalIntType;
+
+typedef struct 
+{
+    Port_PinType                PinID;
+    Port_PinDirectionType       PinDIR;
+    Port_PinModeType            PinMode;
+    Port_PinOutputCurrentType   currentStrength;
+	Port_PinInternalAttachType  internalAttach;
+	Port_PinExternalIntType     externalInt;
+
+}Port_ConfigType;
+
+
 
 
 /**********************************************************************************************************************
@@ -46,12 +89,11 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void Cpu_StartCriticalSection(void);
-void Cpu_StopCriticalSection(void);
-void Isr_SvcHandler(void);
+void Port_Init ( const Port_ConfigType* ConfigPtr ); 
  
-#endif  /* CPU_H */
+#endif  /* PORT_H */
+
 
 /**********************************************************************************************************************
- *  END OF FILE: Std_Types.h
+ *  END OF FILE: Port.h
  *********************************************************************************************************************/

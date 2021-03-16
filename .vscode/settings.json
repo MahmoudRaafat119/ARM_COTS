@@ -4,6 +4,7 @@
         "std_types.h": "c",
         "intctrl.h": "c",
         "intctrl_cfg.h": "c",
-        "intctrl_types.h": "c"
+        "intctrl_types.h": "c",
+        "prot.h": "c"
     }
 }

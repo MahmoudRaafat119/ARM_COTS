@@ -123,7 +123,6 @@ static Mcu_StatusType Mcu_Status = MCU_NOT_INITIALIZED;
 	    {
 	    	/*Enable PLL*/
 	    	RCC.B.PWRDN = 0x0;
-	    	xTest = (MCU_PLL_OUTPUT_DIV2 / (Mcu_ConfigPtr[ClockSetting].Freq_KHz/1000))-1;	
 	    	RCC.B.SYSDIV = (MCU_PLL_OUTPUT_DIV2 / (Mcu_ConfigPtr[ClockSetting].Freq_KHz/1000))-1;	
 	    }
 	    else
@@ -137,7 +136,7 @@ static Mcu_StatusType Mcu_Status = MCU_NOT_INITIALIZED;
 	    		if(Mcu_ConfigPtr[ClockSetting].ClockSource == MCU_CLOCK_SOURCE_MOSC)
 	            {
 	            	RCC.B.MOSCDIS = 0x0;
-	            	RCC.B.XTAL = MCU_XTAL_CLOCK_FREQ_MHZ ; /*TODO : The value need to be mapped */
+	            	RCC.B.XTAL = MCU_XTAL_CLOCK_FREQ_MHZ ; 
 	    	    	locSourceFreq_MHz = MCU_XTAL_CLOCK_FREQ_MHZ;
 	            }
 	    	    else if (Mcu_ConfigPtr[ClockSetting].ClockSource == MCU_CLOCK_SOURCE_PIOSC)

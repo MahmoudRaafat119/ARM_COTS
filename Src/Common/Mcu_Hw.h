@@ -128,6 +128,39 @@ typedef union
 #define GPIO_APB_BASE_ADDRESS_F          0x40025000
 
 #define GPIODIR_OFFSET			0x400
+/**************************************
+*   GPT REGISTRE
+***************************************/
+#define GPT_16_32_BIT_TIMER0_BASE_ADDRESS					0x40030000
+#define	GPT_16_32_BIT_TIMER1_BASE_ADDRESS					0x40031000
+#define	GPT_16_32_BIT_TIMER2_BASE_ADDRESS					0x40032000
+#define	GPT_16_32_BIT_TIMER3_BASE_ADDRESS					0x40033000
+#define	GPT_16_32_BIT_TIMER4_BASE_ADDRESS					0x40034000
+#define	GPT_16_32_BIT_TIMER5_BASE_ADDRESS					0x40035000
+#define	GPT_32_64_BIT_WIDE_TIMER0_BASE_ADDRESS				0x40036000
+#define	GPT_32_64_BIT_WIDE_TIMER1_BASE_ADDRESS				0x40037000
+#define	GPT_32_64_BIT_WIDE_TIMER2_BASE_ADDRESS				0x4004C000
+#define	GPT_32_64_BIT_WIDE_TIMER3_BASE_ADDRESS				0x4004D000
+#define	GPT_32_64_BIT_WIDE_TIMER4_BASE_ADDRESS				0x4004E000
+#define	GPT_32_64_BIT_WIDE_TIMER5_BASE_ADDRESS				0x4004F000
+
+#define GPTMCFG_OFFSET					0x000
+#define GPTMTAMR_OFFSET					0x004
+#define GPTMTBMR_OFFSET					0x008
+#define GPTMCTL_OFFSET					0x00C
+#define GPTMIMR_OFFSET					0x018
+#define GPTMTAV_OFFSET					0x050
+#define GPTMTAILR_OFFSET				0x028
+
+/**************************************
+*   WDT REGISTRE
+***************************************/
+#define WDT_0_BASE_ADDRESS			0x40000000
+#define WDT_1_BASE_ADDRESS			0x40001000
+
+#define WDTLOAD_OFFSET					0x000
+#define WDTCTL_OFFSET					0x008
+#define WDTLOCK_OFFSET					0xC00
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -139,7 +172,19 @@ typedef union
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
 #define GET_HWREG(BaseAddr,RegOffset)      *((volatile uint32*)(BaseAddr+RegOffset))
+
 #define GPIODIR(BaseAddr)                  *((volatile uint32*)BaseAddr+GPIODIR_OFFSET) 
+#define GPTMCFG(BaseAddr)										*((volatile uint32*)(BaseAddr+GPTMCFG_OFFSET))
+#define GPTMTAMR(BaseAddr)									*((volatile uint32*)(BaseAddr+GPTMTAMR_OFFSET))
+#define GPTMTBMR(BaseAddr)									*((volatile uint32*)(BaseAddr+GPTMTBMR_OFFSET))
+#define GPTMCTL(BaseAddr)										*((volatile uint32*)(BaseAddr+GPTMCTL_OFFSET))	
+#define GPTMIMR(BaseAddr)										*((volatile uint32*)(BaseAddr+GPTMIMR_OFFSET))
+#define GPTMTAV(BaseAddr)										*((volatile uint32*)(BaseAddr+GPTMTAV_OFFSET))
+#define GPTMTAILR(BaseAddr)									*((volatile uint32*)(BaseAddr+GPTMTAILR_OFFSET))
+																																
+#define WDTLOAD(BaseAddr)										*((volatile uint32*)(BaseAddr+WDTLOAD_OFFSET))
+#define WDTCTL(BaseAddr)										*((volatile uint32*)(BaseAddr+WDTCTL_OFFSET))
+#define WDTLOCK(BaseAddr)										*((volatile uint32*)(BaseAddr+WDTLOCK_OFFSET))
 
 #define BASE_ADDRESS_PRE                              0x40000000
 #define BASE_ADDRESS_PRE_ALIAS                        0x42000000

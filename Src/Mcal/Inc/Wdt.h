@@ -1,48 +1,55 @@
 /**********************************************************************************************************************
+
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  Std_Types.h
- *    Component:  -
+ *         File:  Wdt.h
  *       Module:  -
  *
- *  Description:  Provision of Standard Types
- *
+ *  Description:  <Write File DESCRIPTION here>     
+ *  
  *********************************************************************************************************************/
-
-
-
-#ifndef STD_TYPES_H
-#define STD_TYPES_H
+#ifndef WDT_H
+#define WDT_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-
-# include "Platform_Types.h"
-# include "Compiler.h"
+#include "platform_Types.h"
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-#define NULL_PTR       ((void *)0)
-#define NULL					  0
 
-# define STD_HIGH     1u /* Physical state 5V or 3.3V */
-# define STD_LOW      0u /* Physical state 0V */
 
-# define STD_ACTIVE   1u /* Logical state active */
-# define STD_IDLE     0u /* Logical state idle */
+/**********************************************************************************************************************
+ *  GLOBAL FUNCTION MACROS
+ *********************************************************************************************************************/
 
-# define STD_ON       1u
-# define STD_OFF      0u
 
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
+typedef uint32 WdgInitialTimeout;
+typedef uint32 WdgMaxTimeout ;
 
-typedef uint8 Std_ReturnType;
-#define E_OK          0u
-#define E_NOT_OK      1u
+
+typedef enum{
+	NOTIFICATION_DISABLE,
+	NOTIFICATION_ENABLE
+}WdgNotificationEnable;
+
+typedef enum{
+	WDG_TIMER_INT_STANDARD,
+	WDG_TIMER_INT_NON_MASKABLE
+}WdgInterruptType;
+
+
+typedef struct{
+	WdgNotificationEnable			notificationEn;
+	WdgInterruptType					interruptType;
+	WdgInitialTimeout					intialTimeout;
+	WdgMaxTimeout							maxTimeout;
+}Wdg_ConfigType;
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
@@ -53,8 +60,9 @@ typedef uint8 Std_ReturnType;
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
 
+ 
+#endif  /* WDT_H */
 
-#endif /* STD_TYPES_H */
 /**********************************************************************************************************************
- *  END OF FILE: Std_Types.h
+ *  END OF FILE: Wdt.h
  *********************************************************************************************************************/
